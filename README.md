@@ -29,6 +29,11 @@ sudo route add -net 10.244.0.0/16 192.168.50.6 # Mac OS X
 
 ```bash
 bosh alias-env vbox -e 192.168.50.6 --ca-cert <(bosh int ~/deployments/vbox/bosh-creds.yml --path /director_ssl/ca)
+```
+
+## URL's
+
+```bash
 Vault     https://10.244.16.2
 Concourse http://10.244.16.3:8080
 Minio     http://10.244.16.4:9000
