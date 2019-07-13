@@ -1,12 +1,27 @@
 # bootstrap-vbox
 
-> Must run this from ~/workspace
+Requires Virtualbox, which can be downloaded from here: https://www.virtualbox.org/
 
 ```bash
+mkdir workspace
 cd ~/workspace
 git clone https://github.com/jmcclenny-epoc/bootstrap-vbox.git
 ```
 
 First run `./bootstrap_vbox.sh --initial`
-
 Subsequent `./bootstrap_vbox.sh`
+
+## Add the route to be able to communicate with Bosh & SSH
+
+```bash
+sudo route add -net 10.244.0.0/16 192.168.50.6 # Mac OS X
+```
+
+## Alias your environment
+
+```bash
+bosh alias-env vbox -e 192.168.50.6 --ca-cert <(bosh int ~/deployments/vbox/bosh-creds.yml --path /director_ssl/ca)
+Vault     https://10.244.16.2
+Concourse http://10.244.16.3:8080
+Minio     http://10.244.16.4:9000
+```
