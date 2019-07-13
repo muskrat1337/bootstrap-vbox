@@ -6,7 +6,7 @@ Requires Virtualbox, which can be downloaded from here: https://www.virtualbox.o
 
 - Vault CLI: https://www.vaultproject.io/downloads.html
 - Minio CLI: brew install minio/stable/mc
-- brew install cloudfoundry/tap/bosh-cli
+- BOSH CLI:  brew install cloudfoundry/tap/bosh-cli
 
 ## Initial setup
 
