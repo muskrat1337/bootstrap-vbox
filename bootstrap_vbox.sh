@@ -86,8 +86,8 @@ fi
 
 ## Get token from tokens.json file to update concourse params before deploying
 ## TODO: Fix this ugly janky code
-concourse_token=$(cat ~/deployments/vbox/concourse-token.json | grep 'token ' | sed 's/token                //g')
 if [[ ! $(cat ~/workspace/bootstrap-vbox/concourse/params/concourse-params.yml | grep concourse_vault_token:) ]]; then
+  concourse_token=$(cat ~/deployments/vbox/concourse-token.json | grep 'token ' | sed 's/token                //g')
   echo "\nconcourse_vault_token: ${concourse_token}" >> ~/workspace/bootstrap-vbox/concourse/params/concourse-params.yml
 fi
 
