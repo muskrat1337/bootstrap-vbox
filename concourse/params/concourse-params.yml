@@ -1,0 +1,23 @@
+credhub_version: "2.4.0"
+credhub_sha1: "2e08e5de86288f421fb7eff72a095adb78c31ea8"
+uaa_version: "73.5.0"
+uaa_sha1: "a8644b37d53666235a75f6618bbfa1ea2b579e41"
+external_host: "10.244.16.3"
+local_user:
+  username: admin
+  password: password
+web_ip: 10.244.16.3
+external_url: http://10.244.16.3:8080
+network_name: default
+web_vm_type: concourse
+db_vm_type: concourse
+db_persistent_disk_type: db
+worker_vm_type: concourse_worker
+deployment_name: concourse
+
+# vault params
+vault_url: https://10.244.16.2
+concourse_vault_mount: "/concourse"
+vault_shared_path: "/common"
+vault_tls_skip_verify: True
+concourse_vault_token: s.wyIiGUI8EtUIDWKZ5kgtbvpx

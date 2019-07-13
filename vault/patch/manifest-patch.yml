@@ -1,0 +1,45 @@
+---
+- type: replace
+  path: /name
+  value:
+    vault
+
+- type: replace
+  path: /instance_groups/name=vault/azs
+  value:
+    [z1]
+
+- type: replace
+  path: /instance_groups/name=vault/vm_type
+  value:
+    vault-vm
+
+- type: replace
+  path: /instance_groups/name=vault/instances
+  value:
+    1
+
+- type: replace
+  path: /instance_groups/name=vault/persistent_disk_type?
+  value:
+    vault-disk
+
+- type: replace
+  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/config?
+  value:
+    |
+     storage "s3" {
+       access_key = ((s3_access_key))
+       secret_key = ((s3_secret_key))
+       bucket     = ((s3_vault_bucket))
+       endpoint   = ((s3_endpoint))
+       region     = ((s3_region))
+     }
+
+- type: replace
+  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/ui?
+  value: true
+
+- type: replace
+  path: /instance_groups/name=vault/networks/0/static_ips?
+  value: [((vault_ip))]

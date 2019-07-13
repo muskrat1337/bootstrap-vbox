@@ -1,0 +1,4 @@
+minio_deployment_name: minio
+minio_accesskey: admin
+minio_secretkey: password
+minio_ip: 10.244.16.4
