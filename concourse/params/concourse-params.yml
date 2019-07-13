@@ -20,3 +20,4 @@ vault_url: https://10.244.16.2
 concourse_vault_mount: "/concourse"
 vault_shared_path: "/common"
 vault_tls_skip_verify: True
+concourse_vault_token: s.wyIiGUI8EtUIDWKZ5kgtbvpx
