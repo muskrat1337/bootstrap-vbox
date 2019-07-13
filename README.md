@@ -19,7 +19,7 @@ git clone https://github.com/jmcclenny-epoc/bootstrap-vbox.git
 - First run `./bootstrap_vbox.sh --initial`
 - Subsequent `./bootstrap_vbox.sh`
 
-## Add the route to be able to communicate with Bosh & to BOSH SSH
+## Add the route to be able to BOSH SSH
 
 ```bash
 sudo route add -net 10.244.0.0/16 192.168.50.6 # Mac OS X
