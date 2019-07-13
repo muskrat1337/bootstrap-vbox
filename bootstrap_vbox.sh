@@ -110,7 +110,14 @@ bosh deploy -d minio ~/workspace/minio-boshrelease/manifests/manifest-fs-example
   --vars-store ~/deployments/vbox/minio-creds.yml \
   --vars-file ~/workspace/bootstrap-vbox/minio/params/minio-params.yml
 
-echo "Add the route to be able to communicate with Bosh & SSH"
-echo "sudo route add -net 10.244.0.0/16     192.168.50.6 # Mac OS X"
-echo "Alias your environment"
-echo "bosh alias-env vbox -e 192.168.50.6 --ca-cert <(bosh int ~/deployments/vbox/bosh-creds.yml --path /director_ssl/ca)"
+echo "##############################################################################################################################"
+echo "#                              Successfully deployed BOSH, Vault, Concourse, and Minio!                                      #"
+echo "##############################################################################################################################"
+echo "# Add the route to be able to communicate with Bosh & SSH                                                                    #"
+echo "# - cmd: sudo route add -net 10.244.0.0/16 192.168.50.6 # Mac OS X                                                           #"
+echo "# Alias your environment                                                                                                     #"
+echo "# - cmd: bosh alias-env vbox -e 192.168.50.6 --ca-cert <(bosh int ~/deployments/vbox/bosh-creds.yml --path /director_ssl/ca) #"
+echo "# - Vault     https://10.244.16.2                                                                                            #"
+echo "# - Concourse http://10.244.16.3:8080                                                                                        #"
+echo "# - Minio     http://10.244.16.4:9000                                                                                        #"
+echo "##############################################################################################################################"
