@@ -89,7 +89,7 @@ fi
 ## TODO: Fix this ugly janky code
 if [[ ! $(cat ~/workspace/bootstrap-vbox/concourse/params/concourse-params.yml | grep concourse_vault_token:) ]]; then
   concourse_token=$(cat ~/deployments/vbox/concourse-token.json | grep 'token ' | awk '{print $NF}')
-  echo "\nconcourse_vault_token: ${concourse_token}" >> ~/workspace/bootstrap-vbox/concourse/params/concourse-params.yml
+  echo -e "\nconcourse_vault_token: ${concourse_token}" >> ~/workspace/bootstrap-vbox/concourse/params/concourse-params.yml
 fi
 
 ## Deploy concourse
