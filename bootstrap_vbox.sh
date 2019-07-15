@@ -23,6 +23,7 @@ bosh create-env ~/workspace/bosh-deployment/bosh.yml \
   -o ~/workspace/bosh-deployment/uaa.yml \
   -o ~/workspace/bosh-deployment/credhub.yml \
   -o ~/workspace/bosh-deployment/jumpbox-user.yml \
+  -o ~/workspace/bootstrap-vbox/bosh/patch/manifest-patch.yml \
   --vars-store ~/deployments/vbox/bosh-creds.yml \
   --vars-file ~/workspace/bootstrap-vbox/bosh/params/bosh-params.yml
 
