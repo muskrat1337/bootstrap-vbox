@@ -52,3 +52,5 @@ vault write concourse/<team_name>/<pipeline_name>/<key_name> value"<value>"
 - Time for some reason doesn't sync on minio server, need to run the `fix_minio_time.sh` script in order to use the Minio Client CLI.
 
 - The route doesn't survive a reboot. Researching if it is even worth persisting.
+
+- Sometimes concourse deployment fails, just re-run the script without `--initial` flag.
