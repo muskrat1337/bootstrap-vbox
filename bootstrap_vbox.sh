@@ -19,6 +19,7 @@ DEPLOYMENTS=${PARRENTPATH}/deployments/vbox
 STEMCELLNAME=bosh-warden-boshlite-ubuntu-xenial-go_agent
 STEMCELLVERSION=315.64
 STEMCELLSHA1=bfeacdd2ef178742b211c9ea7f154e58fb28639a
+
 ## Prepare environment
 [ ! -d ${DEPLOYMENTS} ] && mkdir -p ${DEPLOYMENTS}
 
@@ -57,13 +58,10 @@ if [[ "${FOUNDSTEMCELLNAME}" -eq "${STEMCELLNAME}" ]]; then
     if [[ "${FOUNDSTEMCELLVERSION}" == "${STEMCELLVERSION}" ]]; then
         echo "Stemcell '${STEMCELLNAME} ${STEMCELLVERSION}' already exists."
     else
-        echo "Stemcell Version --- '${FOUNDSTEMCELLNAME} ${FOUNDSTEMCELLVERSION}'"
         bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
             https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
     fi
 else
-    echo "Stemcell Name --- '$(echo ${STEMCELLNAME} | sha1sum)'"
-    echo "Found Stemcell Name --- '$(echo ${FOUNDSTEMCELLNAME} | sha1sum)'"
     bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
         https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
 fi
