@@ -13,8 +13,8 @@ fi
 
 SCRIPTPATH=$(dirname $(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd -P)/$(basename "${BASH_SOURCE[0]}"))
 WORKSPACE=$(dirname ${SCRIPTPATH})
-PARRENTPATH=$(dirname ${WORKSPACE})
-DEPLOYMENTS=${PARRENTPATH}/deployments/vbox
+PARENTPATH=$(dirname ${WORKSPACE})
+DEPLOYMENTS=${PARENTPATH}/deployments/vbox
 
 STEMCELLNAME=bosh-warden-boshlite-ubuntu-xenial-go_agent
 STEMCELLVERSION=315.64
