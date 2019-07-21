@@ -15,6 +15,18 @@ db_persistent_disk_type: db
 worker_vm_type: concourse_worker
 deployment_name: concourse
 
+# populate certificates/key if using --tls
+atc_tls:
+  ca: |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  certificate: |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+  private_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    -----END RSA PRIVATE KEY-----
+
 # vault params
 vault_url: https://10.244.16.2
 concourse_vault_mount: "/concourse"
