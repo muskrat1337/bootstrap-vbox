@@ -4,3 +4,11 @@ s3_vault_bucket: "management-vault-storage"
 s3_endpoint: "http://10.244.16.6:9000"
 s3_region: "default"
 vault_ip: 10.244.16.2
+
+#populate if using --tls
+vault_pki_cert: |
+  -----BEGIN CERTIFICATE-----
+  -----END CERTIFICATE-----
+vault_pki_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  -----END RSA PRIVATE KEY-----
