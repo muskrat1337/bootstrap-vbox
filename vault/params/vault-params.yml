@@ -6,6 +6,9 @@ s3_region: "default"
 vault_ip: 10.244.16.2
 
 #populate if using --tls
+vault_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  -----END CERTIFICATE-----
 vault_pki_cert: |
   -----BEGIN CERTIFICATE-----
   -----END CERTIFICATE-----
