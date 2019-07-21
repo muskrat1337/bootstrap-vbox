@@ -1,0 +1,69 @@
+- type: replace
+  path: /stemcells/alias=default/os
+  value: ubuntu-xenial
+
+- type: replace
+  path: /releases/name=minio/url?
+  value: "https://bosh.io/d/github.com/minio/minio-boshrelease?v=2019-07-10T00-34-56Z"
+
+- type: replace
+  path: /releases/name=minio/sha1?
+  value: "72c7756243b6daa00fc239a65047ece7614f0a20" 
+
+- type: replace
+  path: /instance_groups/name=minio/networks/0/static_ips?
+  value: [((minio_ip))]
+
+- type: replace
+  path: /instance_groups/name=minio/vm_type
+  value:
+    minio-vm
+
+- type: replace
+  path: /instance_groups/name=minio/persistent_disk_type
+  value:
+    minio-disk
+
+- type: replace
+  path: /instance_groups/name=tests/networks/0/static_ips?
+  value: [((minio_ip))]
+
+- type: replace
+  path: /instance_groups/name=tests/vm_type
+  value:
+    minio-vm
+
+- type: replace
+  path: /instance_groups/name=tests/persistent_disk_type
+  value:
+    minio-disk
+  
+- type: replace
+  path: /instance_groups/name=bucket-seeding/networks/0/static_ips?
+  value: [((minio_ip))]
+
+- type: replace
+  path: /instance_groups/name=bucket-seeding/vm_type
+  value:
+    minio-vm
+
+- type: replace
+  path: /instance_groups/name=bucket-seeding/persistent_disk_type
+  value:
+    minio-disk
+
+- type: replace
+  path: /instance_groups/name=minio/jobs/name=minio-server/properties/server_cert?
+  value: ((minio_certificate))
+
+- type: replace
+  path: /instance_groups/name=minio/jobs/name=minio-server/properties/server_key?
+  value: ((minio_private_key))
+
+- type: replace
+  path: /instance_groups/name=minio/jobs/name=minio-server/properties/ca_cert?
+  value: ((minio_ca_cert))
+
+- type: replace
+  path: /instance_groups/name=minio/jobs/name=minio-server/properties/port?
+  value: 443
