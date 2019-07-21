@@ -30,6 +30,14 @@ pushd ${WORKSPACE}
 [ ! -d ${WORKSPACE}/minio-boshrelease ] && git clone https://github.com/minio/minio-boshrelease.git
 popd
 
+if [[ "${TLS}" == 'True' ]]; then
+    echo -e "\nPatch Bosh TLS\n"
+    ## Patch Bosh manifest yaml for tls certs
+    BOSHPATCH=${WORKSPACE}/bootstrap-vbox/bosh/patch/manifest-patch-tls.yml
+else
+    BOSHPATCH=${WORKSPACE}/bootstrap-vbox/bosh/patch/manifest-patch.yml
+fi
+
 ## Deploy Director
 bosh create-env ${WORKSPACE}/bosh-deployment/bosh.yml \
   --non-interactive \
@@ -41,7 +49,7 @@ bosh create-env ${WORKSPACE}/bosh-deployment/bosh.yml \
   -o ${WORKSPACE}/bosh-deployment/uaa.yml \
   -o ${WORKSPACE}/bosh-deployment/credhub.yml \
   -o ${WORKSPACE}/bosh-deployment/jumpbox-user.yml \
-  -o ${WORKSPACE}/bootstrap-vbox/bosh/patch/manifest-patch.yml \
+  -o ${BOSHPATCH} \
   --vars-store ${DEPLOYMENTS}/bosh-creds.yml \
   --vars-file ${WORKSPACE}/bootstrap-vbox/bosh/params/bosh-params.yml
 
@@ -158,7 +166,7 @@ bosh deploy -d concourse ${WORKSPACE}/concourse-bosh-deployment/cluster/concours
 
 if [[ "${TLS}" == 'True' ]]; then
     echo -e "\nPatch Minio TLS\n"
-    ## Patch concourse manifest yaml for tls certs
+    ## Patch minio manifest yaml for tls certs
     MINIOPATCH=${WORKSPACE}/bootstrap-vbox/minio/patch/manifest-patch-tls.yml
 else
     MINIOPATCH=${WORKSPACE}/bootstrap-vbox/minio/patch/manifest-patch.yml
