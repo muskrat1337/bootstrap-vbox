@@ -37,11 +37,15 @@
      }
 
 - type: replace
-  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/tls/certificate?
+  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/tls?/ca?
+  value: ((vault_ca_cert))
+  
+- type: replace
+  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/tls?/certificate?
   value: ((vault_pki_cert))
 
 - type: replace
-  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/tls/key?
+  path: /instance_groups/name=vault/jobs/name=vault/properties/safe/tls?/key?
   value: ((vault_pki_key))
 
 - type: replace
