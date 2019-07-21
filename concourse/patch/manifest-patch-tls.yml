@@ -1,0 +1,35 @@
+- type: replace
+  path: /instance_groups/name=worker/jobs/release=concourse/properties/baggageclaim?
+  value:
+    { driver: overlay }
+
+- type: replace
+  path: /instance_groups/name=web/networks/0/static_ips?
+  value: [((web_ip))]
+  
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/tls?/bind_port?
+  value: 443
+
+- type: replace
+  path: /instance_groups/name=web/jobs/name=web/properties/tls?/cert?
+  value: ((atc_tls))
+
+- type: replace
+  path: /variables/-
+  value:
+    name: atc_ca
+    type: certificate
+    options:
+      is_ca: true
+      common_name: atcCA
+
+- type: replace
+  path: /variables/-
+  value:
+    name: atc_tls
+    type: certificate
+    options:
+      ca: atc_ca
+      common_name: ((concourse_fqdn))
+      alternative_names: [((web_ip))]
