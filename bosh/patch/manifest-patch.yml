@@ -1,6 +1,10 @@
-- path: /resource_pools/name=vms/cloud_properties?
-  type: replace
+- type: replace
+  path: /resource_pools/name=vms/cloud_properties?
   value:
     cpus: 4
     ephemeral_disk: 16384
     memory: 2000
+    
+- type: replace
+  path: /instance_groups/name=bosh/properties/director/trusted_certs?
+  value: ((trusted_certs))
