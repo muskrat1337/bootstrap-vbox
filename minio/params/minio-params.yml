@@ -2,3 +2,14 @@ minio_deployment_name: minio
 minio_accesskey: admin
 minio_secretkey: password
 minio_ip: 10.244.16.4
+
+# populate certificates/key if using --tls
+minio_certificate: |
+  -----BEGIN CERTIFICATE-----
+  -----END CERTIFICATE-----
+minio_private_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  -----END RSA PRIVATE KEY-----
+minio_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  -----END CERTIFICATE-----
