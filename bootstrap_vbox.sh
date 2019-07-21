@@ -51,16 +51,21 @@ export BOSH_CA_CERT="$(bosh int ${DEPLOYMENTS}/bosh-creds.yml --path /director_s
 export BOSH_CLIENT=admin
 export BOSH_CLIENT_SECRET=`bosh int ${DEPLOYMENTS}/bosh-creds.yml --path /admin_password`
 
-## Prepare bosh for Vault, Concourse, and Minio Deployments
-FOUNDSTEMCELLNAME=$(bosh stemcells --column Name | tr -d ' ')
-FOUNDSTEMCELLVERSION=$(bosh stemcells --column Version | tr -d ' ' | grep -oe [0-9.]*)
-if [[ "${FOUNDSTEMCELLNAME}" -eq "${STEMCELLNAME}" ]]; then
-    if [[ "${FOUNDSTEMCELLVERSION}" == "${STEMCELLVERSION}" ]]; then
-        echo "Stemcell '${STEMCELLNAME} ${STEMCELLVERSION}' already exists."
-    else
-        bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
-            https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
-    fi
+if [[ "${INITIAL}" == 'False' ]]; then
+  ## Prepare bosh for Vault, Concourse, and Minio Deployments
+  FOUNDSTEMCELLNAME=$(bosh stemcells --column Name | tr -d ' ')
+  FOUNDSTEMCELLVERSION=$(bosh stemcells --column Version | tr -d ' ' | grep -oe [0-9.]*)
+  if [[ "${FOUNDSTEMCELLNAME}" -eq "${STEMCELLNAME}" ]]; then
+      if [[ "${FOUNDSTEMCELLVERSION}" == "${STEMCELLVERSION}" ]]; then
+          echo -e "\nStemcell '${STEMCELLNAME} ${STEMCELLVERSION}' already exists.\n"
+      else
+          bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
+              https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
+      fi
+  else
+      bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
+          https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
+  fi
 else
     bosh upload-stemcell --sha1 ${STEMCELLSHA1} \
         https://bosh.io/d/stemcells/${STEMCELLNAME}?v=${STEMCELLVERSION}
@@ -70,18 +75,15 @@ bosh update-cloud-config ${WORKSPACE}/bootstrap-vbox/cloud-config/vbox-cloud-con
   --non-interactive \
 
 if [[ "${TLS}" == 'True' ]]; then
-    echo "Patch TLS"
-    ## Patch Vault manifest yaml
-    VAULTMANIFEST=${WORKSPACE}/bootstrap-vbox/vault/safe.yml
-    awk '/safe:/{print;print "            tls:\n              certificate:\n              key:";next}1' ${WORKSPACE}/safe-boshrelease/manifests/safe.yml > ${VAULTMANIFEST}
+    echo -e "\nPatch Vault TLS\n"
+    ## Patch Vault manifest yaml for tls certs
     VAULTPATCH=${WORKSPACE}/bootstrap-vbox/vault/patch/manifest-patch-tls.yml
 else
-    echo "NO Patch TLS"
-    VAULTMANIFEST=${WORKSPACE}/safe-boshrelease/manifests/safe.yml
     VAULTPATCH=${WORKSPACE}/bootstrap-vbox/vault/patch/manifest-patch.yml
 fi
+
 ## Deploy Vault
-bosh  deploy -d vault ${VAULTMANIFEST} \
+bosh  deploy -d vault ${WORKSPACE}/bootstrap-vbox/vault/safe.yml \
   --non-interactive \
   -o ${VAULTPATCH} \
   --vars-store ${DEPLOYMENTS}/vault-creds.yml \
@@ -133,6 +135,14 @@ if [[ ! $(cat ${WORKSPACE}/bootstrap-vbox/concourse/params/concourse-params.yml 
   echo -e "\nconcourse_vault_token: ${concourse_token}" >> ${WORKSPACE}/bootstrap-vbox/concourse/params/concourse-params.yml
 fi
 
+if [[ "${TLS}" == 'True' ]]; then
+    echo -e "\nPatch Concourse TLS\n"
+    ## Patch concourse manifest yaml for tls certs
+    CONCOURSEPATCH=${WORKSPACE}/bootstrap-vbox/concourse/patch/manifest-patch-tls.yml
+else
+    CONCOURSEPATCH=${WORKSPACE}/bootstrap-vbox/concourse/patch/manifest-patch.yml
+fi
+
 ## Deploy concourse
 bosh deploy -d concourse ${WORKSPACE}/concourse-bosh-deployment/cluster/concourse.yml \
   --non-interactive \
@@ -142,14 +152,22 @@ bosh deploy -d concourse ${WORKSPACE}/concourse-bosh-deployment/cluster/concours
   -o ${WORKSPACE}/concourse-bosh-deployment/cluster/operations/vault.yml \
   -o ${WORKSPACE}/concourse-bosh-deployment/cluster/operations/vault-shared-path.yml \
   -o ${WORKSPACE}/concourse-bosh-deployment/cluster/operations/vault-tls-skip_verify.yml \
-  -o ${WORKSPACE}/bootstrap-vbox/concourse/patch/manifest-patch.yml \
+  -o ${CONCOURSEPATCH} \
   --vars-store ${DEPLOYMENTS}/concourse-creds.yml \
   --vars-file ${WORKSPACE}/bootstrap-vbox/concourse/params/concourse-params.yml
+
+if [[ "${TLS}" == 'True' ]]; then
+    echo -e "\nPatch Minio TLS\n"
+    ## Patch concourse manifest yaml for tls certs
+    MINIOPATCH=${WORKSPACE}/bootstrap-vbox/minio/patch/manifest-patch-tls.yml
+else
+    MINIOPATCH=${WORKSPACE}/bootstrap-vbox/minio/patch/manifest-patch.yml
+fi
 
 ## Deploy Minio
 bosh deploy -d minio ${WORKSPACE}/minio-boshrelease/manifests/manifest-fs-example.yml \
   --non-interactive \
-  -o ${WORKSPACE}/bootstrap-vbox/minio/patch/manifest-patch.yml \
+  -o ${MINIOPATCH} \
   --vars-store ${DEPLOYMENTS}/minio-creds.yml \
   --vars-file ${WORKSPACE}/bootstrap-vbox/minio/params/minio-params.yml
 
